@@ -20,3 +20,37 @@ app.listen(port, () => {
 app.use('/healthcheck', healthcheckRoutes);
 app.use('/books', bookRoutes);
 app.use('/getBooks', getAllBooks)
+
+
+
+var Connection = require('tedious').Connection;
+
+  var config = {
+    server: "localhost", // or "localhost"
+    options: {
+    trustServerCertificate: true,
+    trustedConnection: true},
+    authentication: {
+      type: "default",
+      options: {  
+        userName: "JenRob",
+        password: "password",
+      }
+    }
+
+  };
+
+  var connection = new Connection(config);
+
+  // Setup event handler when the connection is established. 
+  connection.on('connect', function(err) {
+    if(err) {
+      console.log('Error: ', err);
+    } else{
+        // If no error, then good to go...
+        console.log('Connected');
+    }
+  });
+
+  // Initialize the connection.
+  connection.connect();
