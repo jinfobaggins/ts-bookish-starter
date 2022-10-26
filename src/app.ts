@@ -3,6 +3,7 @@ import 'dotenv/config';
 
 import healthcheckRoutes from './controllers/healthcheckController';
 import bookRoutes from './controllers/bookController';
+import getAllBooks from './controllers/getAllBooks';
 
 const port = process.env['PORT'] || 3000;
 
@@ -12,8 +13,10 @@ app.listen(port, () => {
     return console.log(`Express is listening at http://localhost:${port}`);
 });
 
+
 /**
  * Primary app routes.
  */
 app.use('/healthcheck', healthcheckRoutes);
 app.use('/books', bookRoutes);
+app.use('/getBooks', getAllBooks)
