@@ -1,4 +1,5 @@
 import { Router, Request, Response } from 'express';
+//import  {getBooksAsList} from '../app';
 
 class getAllBooks {
     router: Router;
@@ -9,7 +10,7 @@ class getAllBooks {
     }
 
     check = (req: Request, res: Response): Response => {
-        return res.status(200).json({ status: 'OK' });
+        return res.status(200).json();
     };
 }
 
