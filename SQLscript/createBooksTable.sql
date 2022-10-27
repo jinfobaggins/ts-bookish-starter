@@ -1,15 +1,15 @@
 USE [bookish]
 GO
 
-/****** Object:  Table [dbo].[Books]    Script Date: 26/10/2022 14:53:02 ******/
+/****** Object:  Table [dbo].[books]    Script Date: 27/10/2022 13:56:22 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE TABLE [dbo].[Books](
-	[ISBN] [uniqueidentifier] NOT NULL,
+CREATE TABLE [dbo].[books](
+	[ISBN] [int] NOT NULL,
 	[Title] [varchar](max) NOT NULL,
 	[Authors] [varchar](max) NOT NULL,
 	[noCopies] [int] NOT NULL,
