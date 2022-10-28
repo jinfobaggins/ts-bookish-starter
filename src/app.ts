@@ -3,8 +3,7 @@ import 'dotenv/config';
 
 import healthcheckRoutes from './controllers/healthcheckController';
 import bookRoutes from './controllers/bookController';
-import getAllBooks from './controllers/getAllBooks';
-import Book from './controllers/book';
+import { getBooksAsList } from './getBooks';
 
 const port = process.env['PORT'] || 3000;
 
@@ -17,7 +16,7 @@ app.listen(port, () => {
 
 //set up tedious and the connection and stuff
 var Connection = require('tedious').Connection;
-var Request = require('tedious').Request;
+export var Request = require('tedious').Request;
 var jwt = require('jsonwebtoken');
 
 
@@ -53,14 +52,10 @@ connection.on('connect', function(err) {
 
 //actually do the stuff now
 
-
-var output: string = 'failed to login'
-
-//getBooksAsList();
 //var message = login('user1', 'securepassword')
 app.use('/healthcheck', healthcheckRoutes);
 app.use('/books', bookRoutes);
-app.use('/getBooks', (req, res) => {getBooksAsList().then((bookArray) => {
+app.use('/getBooks', (req, res) => {getBooksAsList(connection).then((bookArray) => {
     res.send(bookArray)}
 )});
 //app.use('/login', (req, res) => {res.send(message)})
@@ -69,43 +64,12 @@ app.use('/getBooks', (req, res) => {getBooksAsList().then((bookArray) => {
 //login('user1', 'wrongpassword')
 
 
-export function getBooksAsList(){
 
-    var bookArray: Book[] = [];
-
-    var request = new Request("SELECT * FROM books", function(err){
-        if (err) {
-            console.log(err);
-        }
-    });
-
-    return new Promise((resolve, reject) => {
-
-        request.on('row', function(columns) {
-            var arr: any[] = [];
-            columns.forEach(function(column){
-                arr.push(column.value);
-            })
-            var book = new Book(arr[0], arr[1], arr[2], arr[3]);
-            bookArray.push(book);
-    
-        });
-
-
-        console.log(bookArray)
-        request.on('error', error => reject(error));
-        request.on('doneProc', () => resolve(bookArray));
-        connection.execSql(request);
-
-    });
-
-    
-    
-}
 
 
 
 function login(username: string, password: string){
+    var output = 'logn fialed'
    
     var sql: string = "SELECT * FROM users WHERE username='" + username + "' and password='" + password + "'";
     console.log(sql);
