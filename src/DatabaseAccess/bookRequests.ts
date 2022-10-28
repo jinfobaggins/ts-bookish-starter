@@ -1,6 +1,6 @@
 
-import Book from './book';
-import { Request } from './app';
+import Book from '../book';
+import { Request } from 'tedious';
 
 
 

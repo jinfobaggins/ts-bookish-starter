@@ -3,8 +3,10 @@ import 'dotenv/config';
 
 import healthcheckRoutes from './controllers/healthcheckController';
 import bookRoutes from './controllers/bookController';
-import { getBooksAsList } from './bookRequests';
-import { login } from './loggingIn';
+import { getBooksAsList } from './DatabaseAccess/bookRequests';
+import { login } from './DatabaseAccess/loggingIn';
+import { Connection } from 'tedious';
+
 
 const port = process.env['PORT'] || 3000;
 
@@ -16,14 +18,12 @@ app.listen(port, () => {
 
 
 //set up tedious and the connection and stuff
-var Connection = require('tedious').Connection;
-export var Request = require('tedious').Request;
-export var jwt = require('jsonwebtoken');
+//export var jwt = require('jsonwebtoken');
 
 
 
 var config = {
-    server: "localhost", // or "localhost"
+    server: "localhost",
     options: {
         trustServerCertificate: true,
         trustedConnection: true
