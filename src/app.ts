@@ -4,7 +4,7 @@ import 'dotenv/config';
 import healthcheckRoutes from './controllers/healthcheckController';
 import bookRoutes from './controllers/bookController';
 import { getBooksAsList } from './DatabaseAccess/bookRequests';
-import { login } from './DatabaseAccess/loggingIn';
+import { correctUserAndPassword } from './DatabaseAccess/loggingIn';
 import { Connection } from 'tedious';
 
 
@@ -16,6 +16,10 @@ app.listen(port, () => {
     return console.log(`Express is listening at http://localhost:${port}`);
 });
 
+
+require('./passport');
+const auth = require('./routes/auth');
+app.use('/auth', auth);
 
 //set up tedious and the connection and stuff
 //export var jwt = require('jsonwebtoken');
@@ -57,4 +61,4 @@ app.use(express.json());
 app.use('/healthcheck', healthcheckRoutes);
 app.use('/books', bookRoutes);
 app.use('/getBooks', (req, res) => {getBooksAsList(connection).then((bookArray) => {res.send(bookArray)})});
-app.use('/login', (req, res) => {login('user1', 'securepassword', connection).then((message)=>{res.send(message)})});
+app.use('/login', (req, res) => {correctUserAndPassword('user1', 'securepassword', connection).then((message)=>{res.send(message)})});
