@@ -3,7 +3,8 @@ import 'dotenv/config';
 
 import healthcheckRoutes from './controllers/healthcheckController';
 import bookRoutes from './controllers/bookController';
-import { getBooksAsList } from './getBooks';
+import { getBooksAsList } from './bookRequests';
+import { login } from './loggingIn';
 
 const port = process.env['PORT'] || 3000;
 
@@ -17,7 +18,8 @@ app.listen(port, () => {
 //set up tedious and the connection and stuff
 var Connection = require('tedious').Connection;
 export var Request = require('tedious').Request;
-var jwt = require('jsonwebtoken');
+export var jwt = require('jsonwebtoken');
+
 
 
 var config = {
@@ -36,6 +38,7 @@ var config = {
 
 };
 
+//initialise the connection
 var connection = new Connection(config);
 connection.connect();
 
@@ -50,60 +53,8 @@ connection.on('connect', function(err) {
 
 
 
-//actually do the stuff now
-
-//var message = login('user1', 'securepassword')
+app.use(express.json());
 app.use('/healthcheck', healthcheckRoutes);
 app.use('/books', bookRoutes);
-app.use('/getBooks', (req, res) => {getBooksAsList(connection).then((bookArray) => {
-    res.send(bookArray)}
-)});
-//app.use('/login', (req, res) => {res.send(message)})
-
-//login()
-//login('user1', 'wrongpassword')
-
-
-
-
-
-
-function login(username: string, password: string){
-    var output = 'logn fialed'
-   
-    var sql: string = "SELECT * FROM users WHERE username='" + username + "' and password='" + password + "'";
-    console.log(sql);
-    var request = new Request(sql, function(err){
-        if (err) {
-            console.log(err);
-        }
-    });
-
-    request.on('row', function() {
-
-        var token = jwt.sign({ foo: 'loggedin' }, 'shhhhh');
-        var decoded = jwt.verify(token, 'shhhhh');
-        console.log(decoded.foo)
-        output = 'loggedin';
-        console.log(output);
-        
-
-    });
-
-        
-    // Setup event handler when the connection is established. 
-    connection.on('connect', function(err) {
-        if(err) {
-            console.log('Error: ', err);
-        } else{
-            console.log('Connected');
-            
-            connection.execSql(request);
-        }
-    });
-
-    return output;
-    
-    
-        
-}
+app.use('/getBooks', (req, res) => {getBooksAsList(connection).then((bookArray) => {res.send(bookArray)})});
+app.use('/login', (req, res) => {login('user1', 'securepassword', connection).then((message)=>{res.send(message)})});
