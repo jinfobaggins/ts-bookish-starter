@@ -40,18 +40,29 @@ var config = {
 var connection = new Connection(config);
 connection.connect();
 
+connection.on('connect', function(err) {
+    if(err) {
+        console.log('Error: ', err);
+    } else{
+        console.log('Connected');
+
+    }
+});
+
 
 
 //actually do the stuff now
 
-var bookArray: Book[] = [];
+
 var output: string = 'failed to login'
 
-getBooksAsList();
+//getBooksAsList();
 //var message = login('user1', 'securepassword')
 app.use('/healthcheck', healthcheckRoutes);
 app.use('/books', bookRoutes);
-app.use('/getBooks', (req, res) => {res.send(getBooksAsList())})
+app.use('/getBooks', (req, res) => {getBooksAsList().then((bookArray) => {
+    res.send(bookArray)}
+)});
 //app.use('/login', (req, res) => {res.send(message)})
 
 //login()
@@ -60,38 +71,36 @@ app.use('/getBooks', (req, res) => {res.send(getBooksAsList())})
 
 export function getBooksAsList(){
 
+    var bookArray: Book[] = [];
+
     var request = new Request("SELECT * FROM books", function(err){
         if (err) {
             console.log(err);
         }
     });
 
-    request.on('row', function(columns) {
-        var arr: any[] = [];
-        columns.forEach(function(column){
-            arr.push(column.value);
-        })
-        var book = new Book(arr[0], arr[1], arr[2], arr[3]);
-        bookArray.push(book);
+    return new Promise((resolve, reject) => {
 
-    });
+        request.on('row', function(columns) {
+            var arr: any[] = [];
+            columns.forEach(function(column){
+                arr.push(column.value);
+            })
+            var book = new Book(arr[0], arr[1], arr[2], arr[3]);
+            bookArray.push(book);
     
-    //console.log(bookArray);
-        
-    // Setup event handler when the connection is established. 
-    connection.on('connect', function(err) {
-        if(err) {
-            console.log('Error: ', err);
-        } else{
-            console.log('Connected');
+        });
 
-        
-            connection.execSql(request);
-        }
+
+        console.log(bookArray)
+        request.on('error', error => reject(error));
+        request.on('doneProc', () => resolve(bookArray));
+        connection.execSql(request);
+
     });
-    //console.log(bookArray)    
-    return bookArray;
-        
+
+    
+    
 }
 
 
