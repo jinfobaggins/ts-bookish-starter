@@ -1,4 +1,4 @@
-import { correctUserAndPassword } from "./DatabaseAccess/loggingIn";
+import { correctUserAndPassword, findUserByID } from "./DatabaseAccess/loggingIn";
 
 //passport.js
 const passport = require('passport');
@@ -17,5 +17,25 @@ passport.use(new LocalStrategy({
                return cb(null, user, {message: 'Logged In Successfully'});
           })
           .catch(err => cb(err));
+    }
+));
+
+const passportJWT = require("passport-jwt");
+const JWTStrategy   = passportJWT.Strategy;
+const ExtractJWT = passportJWT.ExtractJwt;
+passport.use(new JWTStrategy({
+        jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+        secretOrKey   : 'your_jwt_secret'
+    },
+    function (jwtPayload, cb, connection) {
+
+        //find the user in db if needed. This functionality may be omitted if you store everything you'll need in JWT payload.
+        return findUserByID(jwtPayload, connection)
+            .then(user => {
+                return cb(null, user);
+            })
+            .catch(err => {
+                return cb(err);
+            });
     }
 ));

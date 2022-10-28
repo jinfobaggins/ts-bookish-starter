@@ -6,7 +6,7 @@ import bookRoutes from './controllers/bookController';
 import { getBooksAsList } from './DatabaseAccess/bookRequests';
 import { correctUserAndPassword } from './DatabaseAccess/loggingIn';
 import { Connection } from 'tedious';
-
+import { config } from './DatabaseAccess/createConnection';
 
 const port = process.env['PORT'] || 3000;
 
@@ -26,34 +26,22 @@ app.use('/auth', auth);
 
 
 
-var config = {
-    server: "localhost",
-    options: {
-        trustServerCertificate: true,
-        trustedConnection: true
-    },
-    authentication: {
-        type: "default",
-        options: {  
-            userName: "JenRob",
-            password: "password",
-        }
-    }
 
-};
 
+ 
 //initialise the connection
-var connection = new Connection(config);
+export var connection = new Connection(config);
+
+
 connection.connect();
+    connection.on('connect', function(err) {
+        if(err) {
+            console.log('Error: ', err);
+        } else{
+            console.log('Connected');
 
-connection.on('connect', function(err) {
-    if(err) {
-        console.log('Error: ', err);
-    } else{
-        console.log('Connected');
-
-    }
-});
+        }
+    });
 
 
 
