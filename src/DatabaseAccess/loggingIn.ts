@@ -1,7 +1,4 @@
 import { Request, Connection } from 'tedious';
-import { getConnection } from './createConnection';
-import * as jwt from 'jsonwebtoken';
-import { config } from './createConnection';
 import { connection } from '../app';
 
 
@@ -31,7 +28,6 @@ export async function correctUserAndPassword(username: string, password: string)
 
 
 
-         
 }
 
 export function findUserByID(ID: string){

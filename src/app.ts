@@ -6,7 +6,7 @@ import bookRoutes from './controllers/bookController';
 import { getBooksAsList } from './DatabaseAccess/bookRequests';
 import { correctUserAndPassword } from './DatabaseAccess/loggingIn';
 import { Connection } from 'tedious';
-import { config } from './DatabaseAccess/createConnection';
+import { config } from './DatabaseAccess/connectionConfig';
 
 const port = process.env['PORT'] || 3000;
 
