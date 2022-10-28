@@ -1,10 +1,10 @@
 
 import Book from '../book';
 import { Request } from 'tedious';
+import { connection } from '../app';
 
 
-
-export function getBooksAsList(connection){
+export function getBooksAsList(){
 
     var bookArray: Book[] = [];
 

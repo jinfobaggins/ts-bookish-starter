@@ -2,15 +2,14 @@ import { Request, Connection } from 'tedious';
 import { getConnection } from './createConnection';
 import * as jwt from 'jsonwebtoken';
 import { config } from './createConnection';
+import { connection } from '../app';
 
 
 
-export async function correctUserAndPassword(username: string, password: string, connection_){
+export async function correctUserAndPassword(username: string, password: string){
     var output;
 
-    var connection = getConnection();
-   
-  
+
     var sql: string = "SELECT * FROM users WHERE username='" + username + "' and password='" + password + "'";
     var request = new Request(sql, function(err){
         if (err) {
@@ -31,11 +30,11 @@ export async function correctUserAndPassword(username: string, password: string,
     });
 
 
-   // connection.close();
+
          
 }
 
-export function findUserByID(ID: string, connection){
+export function findUserByID(ID: string){
     var output;
    
     var sql: string = "SELECT * FROM users WHERE ID='" + ID + "'";

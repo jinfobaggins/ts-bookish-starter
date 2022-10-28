@@ -1,4 +1,5 @@
 import { correctUserAndPassword, findUserByID } from "./DatabaseAccess/loggingIn";
+import { connection } from './app';
 
 //passport.js
 const passport = require('passport');
@@ -9,7 +10,7 @@ passport.use(new LocalStrategy({
     }, 
     function (username, password, cb, connection) {
         //this one is typically a DB call. Assume that the returned user object is pre-formatted and ready for storing in JWT
-        return correctUserAndPassword(username, password, connection)
+        return correctUserAndPassword(username, password)
            .then(user => {
                if (!user) {
                    return cb(null, false, {message: 'Incorrect email or password.'});
@@ -27,10 +28,10 @@ passport.use(new JWTStrategy({
         jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
         secretOrKey   : 'your_jwt_secret'
     },
-    function (jwtPayload, cb, connection) {
+    function (jwtPayload, cb) {
 
         //find the user in db if needed. This functionality may be omitted if you store everything you'll need in JWT payload.
-        return findUserByID(jwtPayload, connection)
+        return findUserByID(jwtPayload)
             .then(user => {
                 return cb(null, user);
             })

@@ -21,13 +21,6 @@ require('./passport');
 const auth = require('./routes/auth');
 app.use('/auth', auth);
 
-//set up tedious and the connection and stuff
-//export var jwt = require('jsonwebtoken');
-
-
-
-
-
  
 //initialise the connection
 export var connection = new Connection(config);
@@ -48,5 +41,5 @@ connection.connect();
 app.use(express.json());
 app.use('/healthcheck', healthcheckRoutes);
 app.use('/books', bookRoutes);
-app.use('/getBooks', (req, res) => {getBooksAsList(connection).then((bookArray) => {res.send(bookArray)})});
-app.use('/login', (req, res) => {correctUserAndPassword('user1', 'securepassword', connection).then((message)=>{res.send(message)})});
+app.use('/getBooks', (req, res) => {getBooksAsList().then((bookArray) => {res.send(bookArray)})});
+app.use('/login', (req, res) => {correctUserAndPassword('user1', 'securepassword').then((message)=>{res.send(message)})});
