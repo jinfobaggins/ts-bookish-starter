@@ -1,11 +1,11 @@
 //routes/auth.js
-const express = require('express');
-const router  = express.Router();
+export const express = require('express');
+export const router  = express.Router();
 const jwt = require('jsonwebtoken');
 const passport = require("passport");
 
 /* POST login. */
-router.post('/loginTest', function (req, res) {
+router.post('/loginTest', function (req, res, next) {
     passport.authenticate('local', {session: false}, (err, user, info) => {
         if (err || !user) {
             return res.status(400).json({
@@ -21,7 +21,7 @@ router.post('/loginTest', function (req, res) {
            const token = jwt.sign(user, 'your_jwt_secret');
            return res.json({user, token});
         });
-    })(req, res);
+    })(req, res, next);
 });
 
 module.exports = router;

@@ -7,7 +7,7 @@ export var config = {
     authentication: {
         type: "default",
         options: {  
-            userName: "mainUser",
+            userName: "JenRob",
             password: "password",
         }
     }

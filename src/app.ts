@@ -17,8 +17,11 @@ app.listen(port, () => {
 });
 
 
-require('./passport');
+const passport = require("passport");
+require("./passport");
 const auth = require('./routes/auth');
+const user = require('./routes/user');
+app.use('/user', passport.authenticate('jwt', {session: false}), user);
 
 
  
