@@ -1,36 +1,41 @@
 
-import Book from '../book';
+import BookClass from '../book';
 import { Request } from 'tedious';
-import { connection } from '../app';
+import {User, Book, CheckedOut} from '../sequelizeDefines'
 
 
-export function getBooksAsList(){
+// export function getBooksAsList(){
 
-    var bookArray: Book[] = [];
+//     var bookArray: BookClass[] = [];
 
-    var request = new Request("SELECT * FROM books", function(err){
-        if (err) {
-            console.log(err);
-        }
-    });
+//     var request = new Request("SELECT * FROM books", function(err){
+//         if (err) {
+//             console.log(err);
+//         }
+//     });
 
-    return new Promise((resolve, reject) => {
+//     return new Promise((resolve, reject) => {
 
-        request.on('row', function(columns) {
-            var arr: any[] = [];
-            columns.forEach(function(column){
-                arr.push(column.value);
-            })
-            var book = new Book(arr[0], arr[1], arr[2], arr[3]);
-            bookArray.push(book);
+//         request.on('row', function(columns) {
+//             var arr: any[] = [];
+//             columns.forEach(function(column){
+//                 arr.push(column.value);
+//             })
+//             var book = new BookClass(arr[0], arr[1], arr[2], arr[3]);
+//             bookArray.push(book);
     
-        });
+//         });
 
-        console.log(bookArray)
-        request.on('error', error => reject(error));
-        request.on('doneProc', () => resolve(bookArray));
-        connection.execSql(request);
+//         console.log(bookArray)
+//         request.on('error', error => reject(error));
+//         request.on('doneProc', () => resolve(bookArray));
+//         connection.execSql(request);
 
-    });
+//     });
    
+// }
+
+export async function getBooksAsList(){
+    const books = await Book.findAll();
+    return books;
 }

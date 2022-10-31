@@ -1,4 +1,4 @@
-class Book {
+class BookClass {
     title: string;
     ISBN: number;
     authors: string;
@@ -12,4 +12,4 @@ class Book {
     }
 }
 
-export default Book;
+export default BookClass;
