@@ -10,6 +10,7 @@ class BookController {
         this.router.post('/create/', this.createBook.bind(this));
         this.router.get('/allBooks', this.getBooksAsList.bind(this))
         this.router.get('/author/:author', this.findBookByAuthor.bind(this))
+        this.router.get('/bookAvailability/:id', this.getBookAvailability.bind(this));
     }
 
     async getBooksAsList(req: Request, res: Response){
@@ -56,6 +57,28 @@ class BookController {
         else {
             return res.status(400).json({sorry: 'No books by this author'});
         }
+    }
+
+    async getBookAvailability(req, res){
+        const book = await Book.findOne({where: {ISBN: req.params.id}});
+        if (book){
+            let nonAvailableBooks = []
+
+            const totalCopies = book.get('noCopies')
+            const checkedOutCopies = await CheckedOut.findAll({where: {ISBN: req.params.id, returned: false}});
+        
+            for (const checkedOutBook of checkedOutCopies){
+                nonAvailableBooks.push({user: checkedOutBook.get('UserID'), dueDate: checkedOutBook.get('dueDate')})
+            }
+
+            return res.status(200).json({copies: totalCopies, available: Number(totalCopies)-checkedOutCopies.length, nonAvailableBooks});
+        }
+
+
+        else {
+            return res.status(400).json({sorry: 'Book does not exist!'});
+        }
+
     }
 }
 
