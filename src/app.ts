@@ -1,13 +1,10 @@
 import express from 'express';
 import 'dotenv/config';
-import { Sequelize, Model, DataTypes } from 'sequelize';
-//import { Book } from './sequelizeDefines';
 
 import healthcheckRoutes from './controllers/healthcheckController';
 import bookRoutes from './controllers/bookController';
 import { getBooksAsList } from './DatabaseAccess/bookRequests';
 import { correctUserAndPassword } from './DatabaseAccess/loggingIn';
-import { config } from './DatabaseAccess/connectionConfig';
 
 const port = process.env['PORT'] || 3000;
 
