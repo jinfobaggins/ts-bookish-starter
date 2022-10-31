@@ -3,7 +3,6 @@ import 'dotenv/config';
 
 import healthcheckRoutes from './controllers/healthcheckController';
 import bookRoutes from './controllers/bookController';
-import { getBooksAsList } from './DatabaseAccess/bookRequests';
 import { correctUserAndPassword } from './DatabaseAccess/loggingIn';
 
 const port = process.env['PORT'] || 3000;
@@ -27,5 +26,4 @@ app.use('/healthcheck', healthcheckRoutes);
 app.use('/books', bookRoutes);
 app.use('/auth', auth);
 app.use('/user', passport.authenticate('jwt', {session: false}), user);
-app.use('/getBooks', (req, res) => {getBooksAsList().then((bookArray) => {res.send(bookArray)})});
 app.use('/login', (req, res) => {correctUserAndPassword('user', 'pass').then((message)=>{res.send(message)})});

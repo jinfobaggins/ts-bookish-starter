@@ -6,9 +6,8 @@ class BookController {
 
     constructor() {
         this.router = Router();
-        this.router.get('/search/:id', this.getBook.bind(this));
-
-        this.router.post('/', this.createBook.bind(this));
+        this.router.get('/book/:id', this.getBook.bind(this));
+        this.router.post('/create/', this.createBook.bind(this));
         this.router.get('/allBooks', this.getBooksAsList.bind(this))
     }
 
@@ -18,19 +17,22 @@ class BookController {
         });
     }
 
-    getBook(req: Request, res: Response) {
-        // TODO: implement functionality
-        return res.status(500).json({
-            error: 'server_error',
-            error_description: 'Endpoint not implemented yet.',
+    async getBook(req: Request, res: Response) {
+        const book = await Book.findOne({where: {ISBN: req.params.id}});
+        return res.status(200).json({book
         });
     }
 
-    createBook(req: Request, res: Response) {
+    async createBook(req: Request, res: Response) {
+        const book = await Book.create({
+            ISBN: req.body.ISBN,
+            Title: req.body.Title,
+            Authors: req.body.Authors,
+            noCopies: req.body.noCopies,
+
+        })
         // TODO: implement functionality
-        return res.status(500).json({
-            error: 'server_error',
-            error_description: 'Endpoint not implemented yet.',
+        return res.status(201).json({book
         });
     }
 }
