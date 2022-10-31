@@ -1,6 +1,6 @@
 import { Sequelize, Model, DataTypes } from 'sequelize';
 
-const sequelize = new Sequelize('bookish', 'JenRob', 'password', {
+const sequelize = new Sequelize('bookish', 'mainUser', 'password', {
     host: 'localhost',
     dialect: 'mssql'
 });
@@ -26,7 +26,9 @@ export const User = sequelize.define('Users', {
     ID: {type: DataTypes.UUID ,primaryKey: true},
     username: DataTypes.STRING(50),
     password: DataTypes.STRING(50)
-});
+}, {
+    timestamps: false
+    });
 
 
 
@@ -36,4 +38,6 @@ export const CheckedOut = sequelize.define('CheckedOut', {
     UserID: DataTypes.UUID,
     dueDate: DataTypes.DATEONLY,
     returned: DataTypes.BOOLEAN
-});
+}, {
+    timestamps: false
+    });

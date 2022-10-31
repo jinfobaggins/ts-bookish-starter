@@ -31,4 +31,4 @@ const user = require('./routes/user');
 // app.use('/auth', auth);
 // app.use('/user', passport.authenticate('jwt', {session: false}), user);
 app.use('/getBooks', (req, res) => {getBooksAsList().then((bookArray) => {res.send(bookArray)})});
-app.use('/login', (req, res) => {correctUserAndPassword('user1', 'securepassword').then((message)=>{res.send(message)})});
+app.use('/login', (req, res) => {correctUserAndPassword('user', 'pass').then((message)=>{res.send(message)})});

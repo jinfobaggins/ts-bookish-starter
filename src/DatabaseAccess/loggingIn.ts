@@ -30,8 +30,8 @@ import { Request } from 'tedious';
 
 // }
 
-export async function correctUserAndPassword(username: string, password: string){
-    const users = await User.findOne({attributes: ['ID', ['username', username], ['password', password]]});
+export async function correctUserAndPassword(name: string, pass: string){
+    const users = await User.findOne({where: { username: name, password: pass}});
     return users;
 }
 
