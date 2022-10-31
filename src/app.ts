@@ -3,6 +3,7 @@ import 'dotenv/config';
 
 import healthcheckRoutes from './controllers/healthcheckController';
 import bookRoutes from './controllers/bookController';
+import userRoutes from './controllers/userController';
 import { correctUserAndPassword } from './DatabaseAccess/loggingIn';
 
 const port = process.env['PORT'] || 3000;
@@ -25,5 +26,5 @@ app.use(express.json());
 app.use('/healthcheck', healthcheckRoutes);
 app.use('/books', bookRoutes);
 app.use('/auth', auth);
-app.use('/user', passport.authenticate('jwt', {session: false}), user);
-app.use('/login', (req, res) => {correctUserAndPassword('user', 'pass').then((message)=>{res.send(message)})});
+app.use('/user', passport.authenticate('jwt', {session: false}), userRoutes);
+//app.use('/login', (req, res) => {correctUserAndPassword('user', 'pass').then((message)=>{res.send(message)})});

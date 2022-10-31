@@ -32,11 +32,12 @@ export const User = sequelize.define('Users', {
 
 
 export const CheckedOut = sequelize.define('CheckedOut', {
-    ID: {type: DataTypes.UUID ,primaryKey: true},
+    ID: {type: DataTypes.UUID ,primaryKey: true, autoIncrement: false, defaultValue: DataTypes.UUIDV4},
     ISBN: DataTypes.INTEGER,
     UserID: DataTypes.UUID,
     dueDate: DataTypes.DATEONLY,
     returned: DataTypes.BOOLEAN
 }, {
-    timestamps: false
+    timestamps: false,
+    freezeTableName: true
     });
