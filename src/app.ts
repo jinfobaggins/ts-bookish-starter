@@ -19,7 +19,7 @@ app.listen(port, () => {
 
 require('./passport');
 const auth = require('./routes/auth');
-app.use('/auth', auth);
+
 
  
 //initialise the connection
@@ -41,5 +41,6 @@ connection.connect();
 app.use(express.json());
 app.use('/healthcheck', healthcheckRoutes);
 app.use('/books', bookRoutes);
+app.use('/auth', auth);
 app.use('/getBooks', (req, res) => {getBooksAsList().then((bookArray) => {res.send(bookArray)})});
-app.use('/login', (req, res) => {correctUserAndPassword('user1', 'securepassword').then((message)=>{res.send(message)})});
+app.use('/login', (req, res) => {correctUserAndPassword('user', 'pass').then((message)=>{res.send(message)})});

@@ -1,5 +1,4 @@
 import { correctUserAndPassword, findUserByID } from "./DatabaseAccess/loggingIn";
-import { connection } from './app';
 
 //passport.js
 const passport = require('passport');
