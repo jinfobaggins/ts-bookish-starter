@@ -21,8 +21,6 @@ const passport = require("passport");
 require("./passport");
 const auth = require('./routes/auth');
 const user = require('./routes/user');
-app.use('/user', passport.authenticate('jwt', {session: false}), user);
-
 
  
 //initialise the connection
@@ -45,5 +43,6 @@ app.use(express.json());
 app.use('/healthcheck', healthcheckRoutes);
 app.use('/books', bookRoutes);
 app.use('/auth', auth);
+app.use('/user', passport.authenticate('jwt', {session: false}), user);
 app.use('/getBooks', (req, res) => {getBooksAsList().then((bookArray) => {res.send(bookArray)})});
-app.use('/login', (req, res) => {correctUserAndPassword('user', 'pass').then((message)=>{res.send(message)})});
+app.use('/login', (req, res) => {correctUserAndPassword('user1', 'securepassword').then((message)=>{res.send(message)})});

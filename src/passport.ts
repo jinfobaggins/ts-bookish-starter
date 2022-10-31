@@ -7,7 +7,7 @@ passport.use(new LocalStrategy({
         usernameField: 'username',
         passwordField: 'password'
     }, 
-    function (username, password, cb, connection) {
+    function (username, password, cb) {
         //this one is typically a DB call. Assume that the returned user object is pre-formatted and ready for storing in JWT
         return correctUserAndPassword(username, password)
            .then(user => {
